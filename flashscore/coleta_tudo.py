@@ -7,6 +7,8 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
+from utils.odds import dupla_hipotese
+from utils.odds import palpite
 
 def init_driver():
   options = Options()
@@ -66,7 +68,7 @@ def executar_coleta():
     tabela_jogos = driver.find_element(By.XPATH, "//div[@class='sportName soccer']")
     jogos = tabela_jogos.find_elements(By.XPATH, "//div[contains(@class,'event__match ')]")
 
-    records = [["DATA", "HORARIO", "BANCA", "JOGO", "ODD1", "ODDX", "ODD2"]]
+    records = [["DATA", "HORARIO", "BANCA", "JOGO", "ODD1", "ODDX", "ODD2", "PALPITE", "DUPLA_HIPOTESE"]]
 
     data_jogo = datetime.now() + timedelta(1)
     data_jogo = data_jogo.strftime("%d/%m/%Y")
@@ -98,12 +100,18 @@ def executar_coleta():
           banca = banca.get_attribute("data-bookmaker-id")
           banca = nome_banca(banca)
 
+          odd1 = float(odd1)
+          oddx = float(oddx)
+          odd2 = float(odd2)
+
           row.append(horario[0:5])
           row.append(banca)
           row.append(casa + " x " + visitante)
-          row.append(odd1)
-          row.append(oddx)
-          row.append(odd2)
+          row.append(str(odd1))
+          row.append(str(oddx))
+          row.append(str(odd2))
+          row.append(palpite(odd1, oddx, odd2))
+          row.append(dupla_hipotese(odd1, odd2))
 
           records.append(row)
         time.sleep(1)
