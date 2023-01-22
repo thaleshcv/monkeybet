@@ -6,6 +6,10 @@ from flashscore.coleta_tudo import executar_coleta
 
 def main():
   coleta = executar_coleta()
+
+  if not coleta:
+    sys.exit('Nenhum jogo encontrado. Saindo....')
+
   np_array = np.asarray(coleta)
 
   home_dir = os.path.expanduser('~')
