@@ -11,6 +11,14 @@ import time
 def init_driver():
   options = Options()
   options.headless = True
+  options.add_argument("start-maximized")
+  options.add_argument("disable-infobars")
+  options.add_argument("--disable-extensions")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-application-cache")
+  options.add_argument("--disable-gpu")
+  options.add_argument("--disable-dev-shm-usage")
+
   return webdriver.Firefox(options=options)
 
 def nome_banca(banca):
@@ -98,6 +106,7 @@ def executar_coleta():
           row.append(odd2)
 
           records.append(row)
+        time.sleep(1)
       except:
         if casa is not None and visitante is not None:
           print("Erro coletando jogo " + casa + ' x ' + visitante)
