@@ -31,13 +31,13 @@ def favoritismo(odd1, oddx, odd2):
   return palpite
 
 def palpite(odd1, oddx, odd2):
-  if bom_empate(fl_odd1, fl_oddx, fl_odd2):
+  if bom_empate(odd1, oddx, odd2):
     return "empate"
   else:
-    return favoritismo(fl_odd1, fl_oddx, fl_odd2)
+    return favoritismo(odd1, oddx, odd2)
 
 def dupla_hipotese(odd1, odd2):
-  if fl_odd1 <= fl_odd2:
+  if odd1 <= odd2:
     return "1X"
   else:
     return "X2"

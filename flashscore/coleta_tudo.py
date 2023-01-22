@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 from datetime import timedelta
 import time
+import sys
 
 from utils.odds import dupla_hipotese
 from utils.odds import palpite
@@ -13,8 +14,8 @@ from utils.odds import palpite
 def init_driver():
   options = Options()
   options.headless = True
-  options.add_argument("start-maximized")
-  options.add_argument("disable-infobars")
+  options.add_argument("--start-maximized")
+  options.add_argument("--disable-infobars")
   options.add_argument("--disable-extensions")
   options.add_argument("--no-sandbox")
   options.add_argument("--disable-application-cache")
@@ -77,14 +78,14 @@ def executar_coleta():
       try:
         row = [data_jogo]
 
-        horario = game.find_element(By.CLASS_NAME, "event__time")
-        horario = horario.text
-
         casa = game.find_element(By.CLASS_NAME, "event__participant--home")
         casa = casa.text
 
         visitante = game.find_element(By.CLASS_NAME, "event__participant--away")
         visitante = visitante.text
+
+        horario = game.find_element(By.CLASS_NAME, "event__time")
+        horario = horario.text
 
         odd1 = game.find_element(By.CLASS_NAME, "event__odd--odd1")
         odd1 = odd1.text
@@ -113,13 +114,16 @@ def executar_coleta():
           row.append(palpite(odd1, oddx, odd2))
           row.append(dupla_hipotese(odd1, odd2))
 
+
           records.append(row)
         time.sleep(1)
-      except:
+      except Exception as err:
         if casa is not None and visitante is not None:
           print("Erro coletando jogo " + casa + ' x ' + visitante)
         else:
           print("Erro coletando jogo " + game.get_attribute('id'))
+        
+        print(err)
 
     return records
   finally:
