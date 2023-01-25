@@ -16,7 +16,6 @@ def main():
   if cont > 0:
     sys.exit('Coleta para %s ja realizada' % prox_data)
 
-  return
   # vai macaco!!!!
   coleta = executar_coleta()
 
