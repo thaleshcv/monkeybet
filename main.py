@@ -1,24 +1,22 @@
-import os
-import csv
-import numpy as np
+import sys
 from datetime import datetime
+from datetime import timedelta
+
 from flashscore.coleta_tudo import executar_coleta
+from db.utils import setup as setup_db
+from db.utils import insert_row
+from db.utils import count_date
 
 def main():
-  # montando o caminho do CSV gerado
-  home_dir = os.path.expanduser('~')
-  csv_path = home_dir + '/coleta'
+  prox_data = datetime.now() + timedelta(1)
+  prox_data = prox_data.strftime("%d/%m/%Y")
 
-  # arquivo CSV tem a data no nome
-  data_exec = datetime.now().strftime("%Y%m%d")
-  csv_name = 'coleta-' + data_exec + '.csv'
+  cont = count_date(prox_data)
 
-  csv_file = csv_path + '/' + csv_name
+  if cont > 0:
+    sys.exit('Coleta para %s ja realizada' % prox_data)
 
-  # se existe CSV com a data atual, nao executa a coleta
-  if os.path.isfile(csv_file):
-    sys.exit('Coleta ' + csv_name + ' ja existe. Saindo....')
-
+  return
   # vai macaco!!!!
   coleta = executar_coleta()
 
@@ -26,14 +24,11 @@ def main():
   if not coleta:
     sys.exit('Nenhum jogo encontrado. Saindo....')
 
-  # gera o CSV com os jogos encontrados
-  np_array = np.asarray(coleta)
-
-  with open(csv_path + '/' + csv_name, 'w') as f:
-    csv_writer = csv.writer(f, delimiter=';')
-    csv_writer.writerows(np_array)
-
+  for row in coleta:
+    insert_row(row)
 
 # LETS GO!!!
+
+setup_db()
 
 main()

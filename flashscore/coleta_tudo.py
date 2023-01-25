@@ -69,7 +69,7 @@ def executar_coleta():
     tabela_jogos = driver.find_element(By.XPATH, "//div[@class='sportName soccer']")
     jogos = tabela_jogos.find_elements(By.XPATH, "//div[contains(@class,'event__match ')]")
 
-    records = [["DATA", "HORARIO", "BANCA", "JOGO", "ODD1", "ODDX", "ODD2", "PALPITE", "DUPLA_HIPOTESE"]]
+    records = []
 
     data_jogo = datetime.now() + timedelta(1)
     data_jogo = data_jogo.strftime("%d/%m/%Y")
@@ -106,14 +106,13 @@ def executar_coleta():
           odd2 = float(odd2)
 
           row.append(horario[0:5])
-          row.append(banca)
           row.append(casa + " x " + visitante)
-          row.append(str(odd1))
-          row.append(str(oddx))
-          row.append(str(odd2))
+          row.append(banca)
+          row.append(odd1)
+          row.append(oddx)
+          row.append(odd2)
           row.append(palpite(odd1, oddx, odd2))
           row.append(dupla_hipotese(odd1, odd2))
-
 
           records.append(row)
         time.sleep(1)
