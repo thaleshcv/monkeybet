@@ -1,3 +1,6 @@
+import time
+import sys
+import logging
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
@@ -5,8 +8,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 from datetime import timedelta
-import time
-import sys
 
 from utils.odds import dupla_hipotese
 from utils.odds import palpite
@@ -37,7 +38,7 @@ def nome_banca(banca):
 def executar_coleta():
   driver = init_driver()
 
-  print("Lançando FlashScore....")
+  logging.info("Lançando FlashScore....")
   driver.get("https://www.flashscore.com/")
   driver.maximize_window
   driver.set_window_position(0,-2000)
@@ -45,21 +46,21 @@ def executar_coleta():
   wait = WebDriverWait(driver, 100)
 
   try:
-    print("Esperando aba odds...")
+    logging.info("Esperando aba odds...")
     aba_odds = wait.until(
       EC.element_to_be_clickable((By.XPATH, "//div[@class='tabs__text tabs__text--default'] | //div[text()='Odds']"))
     )
 
     aba_odds.click()
 
-    print("Esperando jogos do dia seguinte...")
+    logging.info("Esperando jogos do dia seguinte...")
     next_day = wait.until(
       EC.element_to_be_clickable((By.XPATH, "//button[@class='calendar__navigation calendar__navigation--tomorrow']"))                                                              
     )
 
     next_day.click()
 
-    print("Esperando Jogos...")
+    logging.info("Esperando Jogos...")
     time.sleep(5)
     
     wait.until(
@@ -118,11 +119,11 @@ def executar_coleta():
         time.sleep(1)
       except Exception as err:
         if casa is not None and visitante is not None:
-          print("Erro coletando jogo " + casa + ' x ' + visitante)
+          logging.info("Erro coletando jogo " + casa + ' x ' + visitante)
         else:
-          print("Erro coletando jogo " + game.get_attribute('id'))
+          logging.info("Erro coletando jogo " + game.get_attribute('id'))
         
-        print(err)
+        logging.info(err)
 
     return records
   finally:

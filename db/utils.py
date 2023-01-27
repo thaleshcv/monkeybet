@@ -38,4 +38,3 @@ def count_date(date):
   cursor.execute(sql, [date])
 
   return cursor.fetchone()[0]
-
