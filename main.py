@@ -21,14 +21,16 @@ def main():
   cont = count_date(prox_data)
 
   if cont > 0:
-    sys.exit('Coleta para %s ja realizada' % prox_data)
+    logging.info('Coleta para %s ja realizada' % prox_data)
+    sys.exit()
 
   # vai macaco!!!!
   coleta = executar_coleta()
 
   # se voltou de maos vazias, cai fora
   if not coleta:
-    sys.exit('Nenhum jogo encontrado. Saindo....')
+    logging.info('Nenhum jogo encontrado. Saindo....')
+    sys.exit()
 
   for row in coleta:
     insert_row(row)
