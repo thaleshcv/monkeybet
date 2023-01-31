@@ -14,9 +14,9 @@ def setup():
     'horario TEXT, '+
     'descricao TEXT, '+
     'banca TEXT, '+
-    'odd1 REAL, '+
-    'oddx REAL, '+
-    'odd2 REAL, '+
+    'odd1 FLOAT, '+
+    'oddx FLOAT, '+
+    'odd2 FLOAT, '+
     'palpite TEXT, '+
     'dupla_hipotese TEXT)'
   )
